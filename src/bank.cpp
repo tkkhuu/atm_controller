@@ -22,7 +22,13 @@ bool Bank::verifyPin(const Card& card, const string& pinNumber)
         return false;
     }
 
-    return (database_[card].first == pinNumber);
+    if (database_[card].first != pinNumber)
+    {
+        std::cout << "Invalid PIN" << std::endl;
+        return false;
+    }
+
+    return true;
 }
 
 vector<Account> Bank::lookUpAccounts(const Card& card)

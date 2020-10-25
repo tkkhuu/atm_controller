@@ -12,7 +12,7 @@ string KeyPad::getStringInput(const string& messageToUser)
 {
     std::cout << messageToUser << std::endl;
     string stringInput;
-    std::cin >> stringInput;
+    std::getline(std::cin, stringInput);
 
     return stringInput;
 }
@@ -26,9 +26,25 @@ unsigned int KeyPad::getDigitInput(const string& messageToUser)
     return digitInput;
 }
 
-void CardReader::readCard()
+bool CardReader::readCard()
 {
-    cardRead_ = Card("003", "Tri Khuu", "01/01/2025");
+    string cardNumber;
+    string cardName;
+    string cardExpDate;
+
+    std::cout << "Please enter card number:" << std::endl;
+    std::getline(std::cin, cardNumber);
+
+    std::cout << "Please enter card name:" << std::endl;
+    std::getline(std::cin, cardName);
+
+    std::cout << "Please enter card expiration date:" << std::endl;
+    std::getline(std::cin, cardExpDate);
+
+
+    cardRead_ = Card(cardNumber, cardName, cardExpDate);
+
+    return true;
 }
 
 // ================================= ATM =================================
@@ -128,7 +144,7 @@ bool ATM::makeTransaction()
         {
             case Transaction::WITHDRAWAL:
             {
-                unsigned int amountWithdrawn = keypad_.getDigitInput("Please enter amount");
+                unsigned int amountWithdrawn = keypad_.getDigitInput("Please enter amount:");
                 if (bank_.withdraw(cardRead, account, amountWithdrawn))
                 {
                     cashSlot_.dispense(amountWithdrawn);
@@ -142,7 +158,7 @@ bool ATM::makeTransaction()
 
             case Transaction::DEPOSIT:
             {
-                unsigned int amountReceived = keypad_.getDigitInput("Please enter amount");
+                unsigned int amountReceived = keypad_.getDigitInput("Please enter amount:");
                 if (bank_.deposit(cardRead, account, amountReceived))
                 {
                     std::cout << "====> Deposited " << amountReceived << std::endl << std::endl;

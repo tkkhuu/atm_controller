@@ -39,7 +39,7 @@ class CardReader
      * This function should instruct the hardware to scan read the information of the card
      * SInce we do not have hardware, this function will serve as a place holder and will generate Card instances for testing
      */
-    void readCard();
+    bool readCard();
     void clearCardRead() {cardRead_ = Card();}
     Card getReadCard() const {return cardRead_;}
 };
