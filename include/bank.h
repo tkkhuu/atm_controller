@@ -1,5 +1,6 @@
 #pragma once
 
+#include <iostream>
 #include <string>
 #include <unordered_map>
 #include <utility>
@@ -19,6 +20,7 @@ class Card
     string expDate_;
 
     public:
+    Card(){}
     Card(const string& cardNumber, const string& cardName, const string& expDate) 
         : cardNumber_(cardNumber), cardName_(cardName), expDate_(expDate) {}
 
@@ -43,7 +45,7 @@ class Account
 
     public:
     Account(const string& accountNumber) 
-        : accountNumber_(accountNumber) {}
+        : accountNumber_(accountNumber), withdrawLimit_(-1) {}
 
     virtual unsigned int getBalance() 
     {
@@ -57,8 +59,14 @@ class Account
 
     virtual bool withdraw(const unsigned int& ammount)
     {
-        if (ammount > withdrawLimit_ || ammount > accountBalance_)
+        if (withdrawLimit_ > 0 && ammount > withdrawLimit_) 
         {
+            std::cout << "Withdrawal Limit Exceeded" << std::endl;
+            return false;
+        }
+        else if (ammount > accountBalance_)
+        {
+            std::cout << "Not enough money" << std::endl;
             return false;
         }
 
@@ -73,6 +81,12 @@ class Account
         return accountNumber_ == other.accountNumber();
     }
 
+    string toString() const
+    {
+        string accountString = "Account Number: ";
+        accountString += accountNumber_;
+        return accountString;
+    }
 };
 
 class SavingAccount : public Account

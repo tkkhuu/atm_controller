@@ -65,8 +65,7 @@ bool Bank::withdraw(const Card& card, const Account& account, const unsigned int
     {
         if (acc == account)
         {
-            acc.withdraw(amount);
-            return true;
+            return acc.withdraw(amount);
         }
     }
 
