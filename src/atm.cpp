@@ -63,7 +63,6 @@ Account ATM::_selectAccount(const Card& card)
 {
     vector<Account> accounts = bank_.lookUpAccounts(card);
     string listOfAccountsString;
-    std::cout << accounts.size() << std::endl;
     for (int i = 0; i < accounts.size(); i++)
     {
         listOfAccountsString += (std::to_string(i) + ". Account Number: " + accounts[i].accountNumber() + "\n");

@@ -26,7 +26,8 @@ class Card
         : cardNumber_(cardNumber), firstName_(firstName), lastName_(lastName), expDate_(expDate) {}
 
     string cardNumber() const {return cardNumber_;}
-    string cardName()   const {return firstName_ + " " + lastName_;}
+    string cardFirstName()   const {return firstName_;}
+    string cardLastName()   const {return lastName_;}
     string expDate()    const {return expDate_;}
     bool operator==(const Card& other) const
     {
@@ -123,9 +124,10 @@ class Bank
     {
         size_t operator()(const Card& card) const
         {
-            return ((std::hash<string>()(card.cardNumber())
-                   ^(std::hash<string>()(card.cardName()) << 1)) >> 1)
-                   ^(std::hash<string>()(card.expDate()) << 1);
+            return ((std::hash<string>()(card.cardNumber()))
+                   ^(std::hash<string>()(card.cardFirstName()))
+                   ^(std::hash<string>()(card.expDate()))
+                   ^(std::hash<string>()(card.cardLastName())));
         }
     };
     std::string bankName_;
@@ -133,7 +135,7 @@ class Bank
 
     public:
     Bank(const string& bankName) : bankName_(bankName) {}
-    bool addUser(const Card& card, string pinNumber, const Account& account);
+    bool addAccount(const Card& card, string pinNumber, const Account& account);
     bool populateDatabase(const string& databaseFilePath);
     bool verifyPin(const Card& card, const string& pinNumber);
     vector<Account> lookUpAccounts(const Card& card);

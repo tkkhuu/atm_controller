@@ -5,15 +5,31 @@
 #include <sstream>
 
 
-bool Bank::addUser(const Card& card, string pinNumber, const Account& account)
+bool Bank::addAccount(const Card& card, string pinNumber, const Account& account)
 {
     if (database_.find(card) != database_.end())
     {
-        std::cout << "Adding User to Bank failed: User already exists" << std::endl;
-        return false;
-    }
+        if (database_[card].first != pinNumber)
+        {
+            std::cout << "Adding Account to Bank failed: Conflicting PIN Number on the same card" << std::endl;
+            return false;
+        }
+        for (auto acc : database_[card].second)
+        {
+            if (acc == account)
+            {
+                std::cout << "Adding Account to Bank failed: Account with the same account number already exist" << std::endl;
+                return false;
+            }
+        }
 
-    database_[card] = {pinNumber, {account}};
+        database_[card].second.push_back(account);
+        
+    }
+    else
+    {
+        database_[card] = {pinNumber, {account}};
+    }
     return true;
 }
 
@@ -127,11 +143,11 @@ bool Bank::populateDatabase(const string& databaseFilePath)
 
         if (row[6] == "Checking")
         {
-            addUser(Card(row[0], row[1], row[2], row[3]), row[4], CheckingAccount(row[5], std::atoi(row[7].c_str())));
+            addAccount(Card(row[0], row[1], row[2], row[3]), row[4], CheckingAccount(row[5], std::atoi(row[7].c_str())));
         }
         else
         {
-            addUser(Card(row[0], row[1], row[2], row[3]), row[4], SavingAccount(row[5], std::atoi(row[7].c_str())));
+            addAccount(Card(row[0], row[1], row[2], row[3]), row[4], SavingAccount(row[5], std::atoi(row[7].c_str())));
         }
 
         std::cout << "Card number:     " << row[0] << std::endl

@@ -72,7 +72,7 @@ The Bank stores the following information:
 
 The main functions from the banks are:
 ```
-bool addUser(const Card& card, string pinNumber, const Account& account);
+bool addAccount(const Card& card, string pinNumber, const Account& account);
 bool populateDatabase(const string& databaseFilePath);
 bool verifyPin(const Card& card, const string& pinNumber);
 vector<Account> lookUpAccounts(const Card& card);
