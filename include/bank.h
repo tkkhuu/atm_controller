@@ -11,7 +11,9 @@ using std::string;
 using std::unordered_map;
 using std::vector;
 
-
+/**
+ * A Card class to implement a physical Card info
+ */
 class Card
 {
     private:
@@ -39,6 +41,9 @@ class Card
     
 };
 
+/**
+ * Class to represent a bank account, this base class is inherited by the 2 sub classes CheckingAccount and SavingAccount
+ */
 class Account
 {
     protected:
@@ -135,12 +140,40 @@ class Bank
 
     public:
     Bank(const string& bankName) : bankName_(bankName) {}
+
+    /**
+     * Adding an account to the database, given a card, pin number of the card and the account
+     */
     bool addAccount(const Card& card, string pinNumber, const Account& account);
+
+    /**
+     * Populate the bank from a CSV file
+     */
     bool populateDatabase(const string& databaseFilePath);
+
+    /**
+     * Verify a PIN number with the one stored in the database
+     */
     bool verifyPin(const Card& card, const string& pinNumber);
+
+    /**
+     * Lookup all accounts associated with a given Card
+     */
     vector<Account> lookUpAccounts(const Card& card);
+
+    /**
+     * Deposit money to a given account
+     */
     bool deposit(const Card& card, const Account& account, const unsigned int& amount);
+
+    /**
+     * Withdraw money from a given account
+     */
     bool withdraw(const Card& card, const Account& account, const unsigned int& amount);
+
+    /**
+     * View balance of a given account
+     */
     bool viewBalance(const Card& card, const Account& account, unsigned int& balance);
 };
 

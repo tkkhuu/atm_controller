@@ -13,20 +13,6 @@ enum Transaction
     EXIT
 };
 
-// enum AuthenticationStatus
-// {
-//     SUCCESS,
-//     INVALID_PIN
-// };
-
-// enum TransactionStatus
-// {
-//     SUCCESS,
-//     FAIL
-// };
-
-
-
 /**
  * CardReader is the class that should be integrated with hardware to read info from the physical card
  */
@@ -44,6 +30,9 @@ class CardReader
     Card getReadCard() const {return cardRead_;}
 };
 
+/** 
+ * Class to simulate the physical keypad on the ATM machine
+ */
 class KeyPad
 {
     public:
@@ -51,6 +40,9 @@ class KeyPad
     unsigned int getDigitInput(const string& messageToUser);
 };
 
+/**
+ * Class to simulate a cash slot on the ATM machine
+ */
 class CashSlot
 {
     public:
@@ -59,22 +51,33 @@ class CashSlot
 
 class ATM
 {
-private:
-std::string id_;
-CardReader cardReader_;
-KeyPad keypad_;
-CashSlot cashSlot_;
-Bank bank_;
+    private:
+    std::string id_;
+    CardReader cardReader_;
+    KeyPad keypad_;
+    CashSlot cashSlot_;
+    Bank bank_;
 
-Account _selectAccount(const Card& card);
-Transaction _selectTransaction();
+    Account _selectAccount(const Card& card);
+    Transaction _selectTransaction();
 
-public:
-ATM(const Bank& bank, const std::string& atmId);
-void readCard();
-bool authenticate();
-bool makeTransaction();
+    public:
+    ATM(const Bank& bank, const std::string& atmId);
 
+    /**
+     * Function to read card from the card slot
+     */
+    void readCard();
+
+    /**
+     * Function to check the PIN number entered is valid with the card
+     */
+    bool authenticate();
+
+    /**
+     * Function to prompt the user to make a transaction: Deposit, Withdraw, View Balance, Exit
+     */
+    bool makeTransaction();
 };
 
 }
