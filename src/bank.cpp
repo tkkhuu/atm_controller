@@ -1,6 +1,9 @@
 #include "bank.h"
 
+#include <fstream>
 #include <iostream>
+#include <sstream>
+
 
 bool Bank::addUser(const Card& card, string pinNumber, const Account& account)
 {
@@ -95,5 +98,52 @@ bool Bank::viewBalance(const Card& card, const Account& account, unsigned int& b
     }
 
     return false;
+}
 
+bool Bank::populateDatabase(const string& databaseFilePath)
+{
+    std::ifstream csvFileStream;
+    csvFileStream.open(databaseFilePath);
+    if (!csvFileStream.is_open())
+    {
+        std::cout << "Error opening file at " << databaseFilePath << std::endl;
+        return false;
+    }
+
+    std::cout << "Populate bank with the following users" << std::endl;
+
+    vector<string> row;
+    string line, word;
+    while(!csvFileStream.eof())
+    {
+        row.clear();
+        std::getline(csvFileStream, line);
+        std::stringstream ss(line); 
+  
+        while(std::getline(ss, word, ',')){
+            
+            row.push_back(word);
+        }
+
+        if (row[6] == "Checking")
+        {
+            addUser(Card(row[0], row[1], row[2], row[3]), row[4], CheckingAccount(row[5], std::atoi(row[7].c_str())));
+        }
+        else
+        {
+            addUser(Card(row[0], row[1], row[2], row[3]), row[4], SavingAccount(row[5], std::atoi(row[7].c_str())));
+        }
+
+        std::cout << "Card number:     " << row[0] << std::endl
+                  << "Card first name: " << row[1] << std::endl
+                  << "Card last name:  " << row[2] << std::endl
+                  << "Card Exp Date:   " << row[3] << std::endl
+                  << "PIN Number:      " << row[4] << std::endl
+                  << "Acc Number:      " << row[5] << std::endl
+                  << "Acc Type:        " << row[6] << std::endl
+                  << "Acc Balance:     " << row[7] << std::endl
+                  << "============" << std::endl;
+    }
+
+    return true;
 }

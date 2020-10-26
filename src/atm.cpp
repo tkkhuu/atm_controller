@@ -29,20 +29,24 @@ unsigned int KeyPad::getDigitInput(const string& messageToUser)
 bool CardReader::readCard()
 {
     string cardNumber;
-    string cardName;
+    string cardFirstName;
+    string cardLastName;
     string cardExpDate;
 
     std::cout << "Please enter card number:" << std::endl;
     std::getline(std::cin, cardNumber);
 
-    std::cout << "Please enter card name:" << std::endl;
-    std::getline(std::cin, cardName);
+    std::cout << "Please enter card first name:" << std::endl;
+    std::getline(std::cin, cardFirstName);
+
+    std::cout << "Please enter card last name:" << std::endl;
+    std::getline(std::cin, cardLastName);
 
     std::cout << "Please enter card expiration date:" << std::endl;
     std::getline(std::cin, cardExpDate);
 
 
-    cardRead_ = Card(cardNumber, cardName, cardExpDate);
+    cardRead_ = Card(cardNumber, cardFirstName, cardLastName, cardExpDate);
 
     return true;
 }

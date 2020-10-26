@@ -16,22 +16,24 @@ class Card
 {
     private:
     string cardNumber_;
-    string cardName_;
+    string firstName_;
+    string lastName_;
     string expDate_;
 
     public:
     Card(){}
-    Card(const string& cardNumber, const string& cardName, const string& expDate) 
-        : cardNumber_(cardNumber), cardName_(cardName), expDate_(expDate) {}
+    Card(const string& cardNumber, const string& firstName, const string& lastName, const string& expDate) 
+        : cardNumber_(cardNumber), firstName_(firstName), lastName_(lastName), expDate_(expDate) {}
 
     string cardNumber() const {return cardNumber_;}
-    string cardName()   const {return cardName_;}
+    string cardName()   const {return firstName_ + " " + lastName_;}
     string expDate()    const {return expDate_;}
     bool operator==(const Card& other) const
     {
-        return (cardNumber_ == other.cardNumber() &&
-                cardName_   == other.cardName()   &&
-                expDate_    == other.expDate());
+        return (cardNumber_ == other.cardNumber_ &&
+                firstName_  == other.firstName_ &&
+                lastName_   == other.lastName_ &&
+                expDate_    == other.expDate_);
     }
     
 };
@@ -132,6 +134,7 @@ class Bank
     public:
     Bank(const string& bankName) : bankName_(bankName) {}
     bool addUser(const Card& card, string pinNumber, const Account& account);
+    bool populateDatabase(const string& databaseFilePath);
     bool verifyPin(const Card& card, const string& pinNumber);
     vector<Account> lookUpAccounts(const Card& card);
     bool deposit(const Card& card, const Account& account, const unsigned int& amount);
